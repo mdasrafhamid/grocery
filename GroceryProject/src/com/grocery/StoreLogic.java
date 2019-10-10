@@ -47,6 +47,8 @@ public class StoreLogic {
 				
 				if(choice>=min && choice<=max)
 					return choice;
+				else if(choice==0)
+					throw new InvalidInputException("0 not allowed!");
 				else
 					throw new InvalidInputException("Choice out of range!");
 			}
@@ -156,7 +158,7 @@ public class StoreLogic {
 		//putting items from basket to store
 		for (int i = 0; i < size; i++) {
 			Item tempItem = bList.remove(0);
-			Item storeItem = getItemByName(tempItem.getName());
+			Item storeItem = getStoreItemByName(tempItem.getName());
 			storeItem.setQty(tempItem.getQty() + storeItem.getQty());
 		}
 		if (b.isEmpty())
@@ -165,19 +167,7 @@ public class StoreLogic {
 		firstMenu();
 	}
 
-	private Item getItemByName(String s) {
-
-		for (Item item : Item.getList()) {
-			if (item.getName().equals(s))
-				return item;
-		}
-
-		return null;
-
-	}
-
 	private void printItems() {
-		
 		
 		System.out.println(dashN);
 		System.out.println("\tList of store items");
@@ -191,7 +181,35 @@ public class StoreLogic {
 		}
 
 	}
+	private Item getStoreItemByName(String s) {
+	
+		for (Item item : Item.getList()) {
+			if (item.getName().equals(s))
+				return item;
+		}
+		return null;
+	}
 
+	private Item getBasketItem(Basket b,String name) {
+		
+		for (Item item : b.getList()) {
+			if(item.getName().equals(name))
+				return item;
+		}
+		return null;
+	}
+
+	private void addToBasket(int qty, Basket b,Item sItem) {
+		Item bItem;
+		
+		if((bItem=getBasketItem(b, sItem.getName()))==null) //not in basket -> new basket item
+			b.addToBasket(new Item(sItem.getName(), qty, sItem.getPrice()));
+		else
+			bItem.setQty(bItem.getQty()+qty);	//already in basket -> add to basket item qty
+		
+		sItem.setQty(sItem.getQty() - qty); //deduct from store
+	}
+	
 	private void chooseItem(Basket b){
 
 		System.out.println("\nPlease choose from item 1 to " + Item.getList().size() + ": ");
@@ -200,21 +218,22 @@ public class StoreLogic {
 		
 		choice = inputChoice(1,Item.getList().size());
 		
-		Item item = Item.getList().get(choice - 1);
-		System.out.println("You have chosen " + item.getName() + "!");
-
-		System.out.println("\nPlease choose quantity of " + item.getName() + " (stock : " + item.getQty() + ")");
+		Item sItem = Item.getList().get(choice - 1);
 		
-		choice = inputChoice(0,99);
+		System.out.println("You have chosen " + sItem.getName() + "!");
 
-		//error checking - qty within range
-		if (choice > 0 && choice <= item.getQty()) {
+		System.out.println("\nPlease choose quantity of " + sItem.getName() + " (stock : " + sItem.getQty() + ")");
+		
+		choice = inputChoice(1,99); //Limit qty to 99, no zero
 
-			System.out.println(choice + " " + item.getName() + " selected");
-			b.addToBasket(new Item(item.getName(), choice, item.getPrice()));
-			item.setQty(item.getQty() - choice);
+		//error checking - qty within stock
+		if (choice > 0 && choice <= sItem.getQty()) {
 
-		} else if (choice > item.getQty())
+			System.out.println(choice + " " + sItem.getName() + " selected");
+			
+			addToBasket(choice, b, sItem);
+
+		} else if (choice > sItem.getQty())
 			System.out.println("out of stock!");
 		else
 			System.out.println("no qty selected. Please reenter");
