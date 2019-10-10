@@ -224,7 +224,7 @@ public class StoreLogic {
 
 		System.out.println("\nPlease choose quantity of " + sItem.getName() + " (stock : " + sItem.getQty() + ")");
 		
-		choice = inputChoice(1,99); //Limit qty to 99, no zero
+		choice = inputChoice(1,99); //Limit qty to 99
 
 		//error checking - qty within stock
 		if (choice > 0 && choice <= sItem.getQty()) {
