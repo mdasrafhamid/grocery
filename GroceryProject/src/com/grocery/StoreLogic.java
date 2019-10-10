@@ -17,6 +17,7 @@ public class StoreLogic {
 	static DecimalFormat df = new DecimalFormat("0.00");
 	static String dashN = "\n---------------------------------------------------";
 	static String dash = "---------------------------------------------------";
+	static String gdbye = "Goodbye! Please come back for more!";
 	
 	
 	public void load() {
@@ -36,6 +37,7 @@ public class StoreLogic {
 		firstMenu();
 	}
 	
+	//error checking for input, input must be within range
 	private int inputChoice(int min, int max){
 		
 		int choice;
@@ -53,7 +55,7 @@ public class StoreLogic {
 					throw new InvalidInputException("Choice out of range!");
 			}
 			else {
-				sc.nextLine();
+				sc.nextLine(); //just to clear
 				throw new InvalidInputException("Choice not an integer!");
 			}
 		} catch (InvalidInputException e) {
@@ -75,8 +77,6 @@ public class StoreLogic {
 		System.out.println("2. Show Items");
 		System.out.println("3. Exit");
 
-		
-
 		switch (inputChoice(1,3)) {
 
 		case 1:
@@ -89,7 +89,7 @@ public class StoreLogic {
 			firstMenu();
 			break;
 		case 3:
-			System.out.println("See you again! Goodbye!");
+			System.out.println(gdbye);
 			System.exit(1);
 			break;
 		default:
@@ -132,6 +132,7 @@ public class StoreLogic {
 			break;
 		case 6:
 			System.exit(1);
+			System.out.println(gdbye);
 			break;
 		default:
 			System.out.println("not an option");
@@ -145,6 +146,9 @@ public class StoreLogic {
 		if (b.isEmpty())
 			System.out.println("Your basket is empty! Pls select an item");
 		else {
+			System.out.println("Receipt:");
+			System.out.println(dash);
+			printBasketItem(b);
 			System.out.println("Your order is succesfull!");
 			System.out.println("Thank you for shopping with us!\n");
 			firstMenu();
@@ -158,7 +162,7 @@ public class StoreLogic {
 		//putting items from basket to store
 		for (int i = 0; i < size; i++) {
 			Item tempItem = bList.remove(0);
-			Item storeItem = getStoreItemByName(tempItem.getName());
+			Item storeItem = getStoreItem(tempItem.getName());
 			storeItem.setQty(tempItem.getQty() + storeItem.getQty());
 		}
 		if (b.isEmpty())
@@ -181,7 +185,7 @@ public class StoreLogic {
 		}
 
 	}
-	private Item getStoreItemByName(String s) {
+	private Item getStoreItem(String s) {
 	
 		for (Item item : Item.getList()) {
 			if (item.getName().equals(s))
@@ -207,7 +211,7 @@ public class StoreLogic {
 		else
 			bItem.setQty(bItem.getQty()+qty);	//already in basket -> add to basket item qty
 		
-		sItem.setQty(sItem.getQty() - qty); //deduct from store
+		sItem.setQty(sItem.getQty() - qty); //deduct from store item qty
 	}
 	
 	private void chooseItem(Basket b){
