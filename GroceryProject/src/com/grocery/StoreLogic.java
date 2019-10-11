@@ -15,8 +15,8 @@ public class StoreLogic {
 	
 	static Scanner sc = new Scanner(System.in);
 	static DecimalFormat df = new DecimalFormat("0.00");
-	static String dashN = "\n---------------------------------------------------";
-	static String dash = "---------------------------------------------------";
+	static String dashN = "\n=======================================";
+	static String dash = "=======================================";
 	static String gdbye = "Goodbye! Please come back for more!";
 	
 	
@@ -70,7 +70,13 @@ public class StoreLogic {
 	private void firstMenu(){
 
 		System.out.println(dashN);
-		System.out.println("\t\tWelcome to SriniMart!");
+		System.out.println("\tWelcome to SriniMart!");
+		System.out.println("\r\n" +  
+				" _____     _     _ _____         _   \r\n" + 
+				"|   __|___|_|___|_|     |___ ___| |_ \r\n" + 
+				"|__   |  _| |   | | | | | .'|  _|  _|\r\n" + 
+				"|_____|_| |_|_|_|_|_|_|_|__,|_| |_|  \r\n" + 
+				"");
 		System.out.println(dash);
 
 		System.out.println("1. Select Item");
@@ -101,7 +107,12 @@ public class StoreLogic {
 
 	private void mainMenu(Basket b){
 		System.out.println(dashN);
-		System.out.println("\t\tSriniMart");
+		System.out.println("\r\n" +  
+				" _____     _     _ _____         _   \r\n" + 
+				"|   __|___|_|___|_|     |___ ___| |_ \r\n" + 
+				"|__   |  _| |   | | | | | .'|  _|  _|\r\n" + 
+				"|_____|_| |_|_|_|_|_|_|_|__,|_| |_|  \r\n" + 
+				"");
 		System.out.println(dash);
 
 		System.out.println("1. Select Item");
@@ -146,9 +157,8 @@ public class StoreLogic {
 		if (b.isEmpty())
 			System.out.println("Your basket is empty! Pls select an item");
 		else {
-			System.out.println("Receipt:");
 			System.out.println(dash);
-			printBasketItem(b);
+//			printBasketItem(b);
 			System.out.println("Your order is succesfull!");
 			System.out.println("Thank you for shopping with us!\n");
 			firstMenu();
@@ -248,7 +258,7 @@ public class StoreLogic {
 	private void printBasketItem(Basket b) {
 
 		System.out.println(dashN);
-		System.out.println("\t\tItems in basket!");
+		System.out.println("\tItems in basket!");
 		System.out.println(dash);
 		System.out.println("No.\tItem\t\tQty\tPrice");
 		System.out.println(dash);
